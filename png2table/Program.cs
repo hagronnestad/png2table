@@ -2,13 +2,15 @@
 using System.Drawing;
 using System.IO;
 
-namespace png2table
-{
-    internal class Program
-    {
-        private static void Main(string[] args)
-        {
-            if (args.Length == 0) PrintHelp();
+namespace png2table {
+
+    internal class Program {
+
+        private static void Main(string[] args) {
+            if (args.Length == 0) {
+                PrintHelp();
+                return;
+            }
 
             var inputFile = string.Empty;
             var outputFile = string.Empty;
@@ -18,10 +20,8 @@ namespace png2table
             var st = false;
             var bgColor = Color.White.Name;
 
-            for (int i = 0; i < args.Length; i++)
-            {
-                switch (args[i].Trim().ToLower())
-                {
+            for (int i = 0; i < args.Length; i++) {
+                switch (args[i].Trim().ToLower()) {
                     case "-nocolspan":
                         noColSpan = true;
                         break;
@@ -35,20 +35,16 @@ namespace png2table
                         break;
 
                     case "-bg":
-                        if (args.Length >= i + 1)
-                        {
+                        if (args.Length >= i + 1) {
                             bgColor = args[i + 1];
                             i++;
                         }
                         break;
 
                     default:
-                        if (inputFile == string.Empty)
-                        {
+                        if (inputFile == string.Empty) {
                             inputFile = args[i];
-                        }
-                        else
-                        {
+                        } else {
                             outputFile = args[i];
                         }
                         break;
@@ -64,8 +60,7 @@ namespace png2table
             Console.WriteLine($"Use style tag: {(st ? "yes" : "no")}");
             Console.WriteLine("");
 
-            try
-            {
+            try {
                 var p2t = new Png2Table();
                 var html = p2t.Convert(inputFile, !noColSpan, st, !noAa, bgColor);
                 File.WriteAllText(outputFile, html);
@@ -75,23 +70,16 @@ namespace png2table
                 Console.WriteLine("");
 
                 Console.WriteLine("Conversion completed!");
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Exception:\n{ex}\n");
                 Console.WriteLine("Conversion failed!");
-            }
-            finally
-            {
+            } finally {
                 Console.ResetColor();
             }
-         
-            Console.ReadLine();
         }
 
-        public static void PrintHelp()
-        {
+        public static void PrintHelp() {
             Console.WriteLine("Usage: png2table [-nocolspan] [-st] [-noaa] [-bg html_color] image_file html_output_file");
             Console.WriteLine("");
             Console.WriteLine("Options:");
